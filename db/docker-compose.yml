@@ -1,0 +1,32 @@
+
+#source: 
+# https://hub.docker.com/_/mariadb
+# https://medium.com/the-andela-way/how-to-setup-a-new-wordpress-project-with-docker-7f520f817b97
+#https://mariadb.com/fr/resources/blog/mariadb-and-docker-use-cases-part-1/
+#pour la version 3 de docker-compose:
+  # https://docs.docker.com/compose/compose-file/compose-file-v3/
+
+#version de docker compose
+version: "3.3"
+    
+services:
+  #mariadb
+  db:
+    image: mariadb:10.7.3
+    volumes:
+      - ./data:/var/lib/mysql
+    # restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: serverstatusdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      # MYSQL_TCP_PORT: 3306
+    ports:
+      - "3308:3306"
+  #adminer
+  adminer:
+    image: adminer
+    # restart: always
+    ports:
+      - "7080:8080"

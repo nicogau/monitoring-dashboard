@@ -76,6 +76,9 @@
         "symfony/polyfill-php81": "*"
     },
     "scripts": {
+        "dev-start": "docker-compose -f ./db/docker-compose.yml up -d && symfony server:start&",
+        "dev-stop": "docker-compose -f ./db/docker-compose.yml down && symfony server:stop",
+        "dev-init": "php bin/console d:d:d  -f &&  php bin/console d:d:c && php bin/console d:s:u -f ",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
