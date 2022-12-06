@@ -26,9 +26,14 @@ class ServerInfoService {
         return $errors;
     }
 
-    public function getSsl(string $domain) {
+    /**
+     * get tls certificate info for a given domain 
+     *
+     * @param string $domain
+     * @return void
+     */
+    public function getTlsCert(string $domain) {
         $process = new Process(['bash', $this->getScript($this::GETTLSSCRIPT), $domain]);
-        // $process = new Process(['bash', $this->getScript($this::HELLOSCRIPT), $domain]);
         $process->run();
 
         if (!$process->isSuccessful()){
@@ -40,6 +45,6 @@ class ServerInfoService {
         if ( count($jsonError) > 0){
             throw new LogicException('invalid json format');
         }
-        return $process->getOutput();
+        return  json_decode($process->getOutput());
     }
 }

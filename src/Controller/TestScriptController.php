@@ -12,13 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TestScriptController extends AbstractController
 {
-    #[Route('/testscript', name: 'app_test_script')]
+    #[Route('/test', name: 'app_test')]
     public function index( ServerInfoService $serverInfo ): Response
     {
         $domain="www.pointvirgule.net";
 
         try {
-            $tlsData =  $serverInfo->getSsl($domain);
+            $tlsData =  $serverInfo->getTlsCert($domain);
             dd($tlsData);
         } catch(Exception $e) {
             dd($e);
