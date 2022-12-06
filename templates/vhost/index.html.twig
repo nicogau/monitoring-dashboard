@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ajout vhost{% endblock %}
+
+{% block body %}
+
+<div class="vhost-wrapper">
+    <div class="container">
+        <h3 class='text-center my-4 '>Ajouter / supprimer des machines virtuelles</h1>
+        {# ajouter une vhost #}
+            <div class="my-4">
+                {{ form_start(addVhostForm)}}
+                    {# errors #}
+                    <div class="form-error m-1">
+                    {{ form_errors(addVhostForm)}}
+                    </div>
+                    <div class="m-1">
+                        <div>Ajouter un hôte virtuelle</div> 
+                        {# add form #}
+                        <div class="d-inline-flex ">
+                            <div class="m-1">
+                                {{ form_row(addVhostForm.addVhost.hostname) }}
+                            </div>
+                            <div class="m-1">
+                                {{ form_row(addVhostForm.addVhost.submit) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                {{ form_end(addVhostForm)}}
+            </div>
+
+        {# supprimer une vhost #}
+            <div class="my-4">
+                {{ form_start(removeVhostForm)}}
+                    {# errors #}
+                    <div class="form-error m-1">
+                    {{ form_errors(removeVhostForm)}}
+                    </div>
+                    <div class="m-1">
+                        <div>Supprimer un hôte virtuelle</div> 
+                        {# remove form #}
+                        <div class="d-inline-flex ">
+                            <div class="m-1">
+                                {{ form_row(removeVhostForm.removeVhost.hostname) }}
+                            </div>
+                            <div class="m-1">
+                                {{ form_row(removeVhostForm.removeVhost.submit) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                {{ form_end(removeVhostForm)}}
+            </div>
+    </div>
+</div>
+{% endblock %}
