@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ServerInfoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -44,6 +46,14 @@ class ServerInfo
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'server', targetEntity: Vhost::class)]
+    private Collection $vhosts;
+
+    public function __construct()
+    {
+        $this->vhosts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -168,6 +178,36 @@ class ServerInfo
     public function setUpdatedAt(): self
     {
         $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vhost>
+     */
+    public function getVhosts(): Collection
+    {
+        return $this->vhosts;
+    }
+
+    public function addVhost(Vhost $vhost): self
+    {
+        if (!$this->vhosts->contains($vhost)) {
+            $this->vhosts->add($vhost);
+            $vhost->setServer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVhost(Vhost $vhost): self
+    {
+        if ($this->vhosts->removeElement($vhost)) {
+            // set the owning side to null (unless already changed)
+            if ($vhost->getServer() === $this) {
+                $vhost->setServer(null);
+            }
+        }
 
         return $this;
     }

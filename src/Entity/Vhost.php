@@ -34,6 +34,9 @@ class Vhost
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'vhosts')]
+    private ?ServerInfo $server = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -109,6 +112,18 @@ class Vhost
     public function setUpdatedAt(): self
     {
         $this->updatedAt = new DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getServer(): ?ServerInfo
+    {
+        return $this->server;
+    }
+
+    public function setServer(?ServerInfo $server): self
+    {
+        $this->server = $server;
 
         return $this;
     }
