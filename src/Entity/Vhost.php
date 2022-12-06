@@ -6,8 +6,14 @@ use App\Repository\VhostRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VhostRepository::class)]
+#[UniqueEntity(
+    fields: ['hostname'],
+    message: 'un hôte virtuel avec cette adresse existe déjà'
+    )]
 #[ORM\HasLifecycleCallbacks]
 class Vhost
 {
@@ -25,6 +31,7 @@ class Vhost
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tlsRegistrarName = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $hostname = null;
 

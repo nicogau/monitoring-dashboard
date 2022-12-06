@@ -6,14 +6,21 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
+            {# lien page listant toutes les infos #}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_home')}}">infos</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_test')}}">test</a>
-            </li>
+            {# lien page configuration virtual host #}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_vhost')}}">vhost</a>
+            </li>
+            {# lien page configuration serveur #}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_server')}}">serveur</a>
+            </li>
+            {# lien page test #}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_test')}}">test</a>
             </li>
         </ul>
         </div>

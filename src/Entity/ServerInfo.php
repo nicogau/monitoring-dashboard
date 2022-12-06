@@ -7,8 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ServerInfoRepository::class)]
+#[UniqueEntity(
+    fields: ['ip'],
+    message: 'un serveur avec cette adresse existe déjà'
+    )]
 #[ORM\HasLifecycleCallbacks]
 class ServerInfo
 {
@@ -17,7 +23,7 @@ class ServerInfo
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: false, unique:true)]
     private ?string $ip = null;
 
     #[ORM\Column(type: Types::BIGINT, nullable: true)]

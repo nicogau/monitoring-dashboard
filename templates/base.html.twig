@@ -18,6 +18,22 @@
     </head>
     <body>
         {{ include('_components/navbar.html.twig') }}
+        {# flash message #}
+        {% if app.session.flashBag.has('notice')%}
+           <div class="px-2 py-3 text-center">
+            {% for msg in app.session.flashBag.get('notice') %}
+                {{ msg }}
+            {% endfor %}
+           </div> 
+        {% endif %}
+
+        {% if app.session.flashBag.has('error')%}
+           <div class="px-2 py-3 text-center">
+            {% for msg in app.session.flashBag.get('error') %}
+                {{ msg }}
+            {% endfor %}
+           </div> 
+        {% endif %}
         {% block body %}
         {% endblock %}
     </body>
