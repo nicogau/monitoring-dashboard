@@ -31,8 +31,7 @@ class Vhost
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tlsRegistrarName = null;
 
-    #[Assert\NotBlank]
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
     private ?string $hostname = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]

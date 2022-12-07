@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Unique;
 
-class VhostType extends AbstractType
+class AddVhostType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -20,21 +20,18 @@ class VhostType extends AbstractType
                 'label' => false,
                 'required' => true,
                 'constraints' => [
-                    new NotBlank(),
-                    new Unique(),
+                    new NotBlank([
+                        'message' => 'ce champ ne doit pas être vide',
+                    ]),
                 ],
             ])
-            ->add('submit',SubmitType::class, [
-                'label' => 'valider'
-            ])
-            // ->add('server')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // 'data_class' => Vhost::class,
+            'data_class' => Vhost::class,
         ]);
     }
 }

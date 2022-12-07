@@ -6,52 +6,55 @@
 
 <div class="vhost-wrapper">
     <div class="container">
-        <h3 class='text-center my-4 '>Ajouter / supprimer des machines virtuelles</h1>
-        {# ajouter une vhost #}
-            <div class="my-4">
-                {{ form_start(addVhostForm)}}
-                    {# errors #}
-                    <div class="form-error m-1">
-                    {{ form_errors(addVhostForm)}}
-                    </div>
-                    <div class="m-1">
-                        <div>Ajouter un hôte virtuelle</div> 
-                        {# add form #}
-                        <div class="d-inline-flex ">
-                            <div class="m-1">
-                                {{ form_row(addVhostForm.addVhost.hostname) }}
-                            </div>
-                            <div class="m-1">
-                                {{ form_row(addVhostForm.addVhost.submit) }}
+            {# adding vhost #}
+        <h3 class='text-center my-4 '>Ajouter / supprimer des Vhosts </h1>
+        <div class="d-flex flex-column align-items-center w-100">
+            <div class="my-4 w-100">
+                <div>
+                    {{ form_start(addVhostForm)}}
+                        {# errors #}
+                        <div class="row form-error m-1">
+                        {{ form_errors(addVhostForm)}}
+                        </div>
+                        <div class="row m-1">
+                            <div>Ajouter un nouveau Vhost</div> 
+                            {# add form #}
+                            <div class="d-flex w-100">
+                                <div class="m-1 w-50">
+                                    {{ form_row(addVhostForm.addVhost.hostname) }}
+                                </div>
+                                <div class="m-1">
+                                    {{ form_row(addVhostForm.addbtn) }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                {{ form_end(addVhostForm)}}
+                    {{ form_end(addVhostForm ) }}
+                </div>
             </div>
 
-        {# supprimer une vhost #}
-            <div class="my-4">
-                {{ form_start(removeVhostForm)}}
-                    {# errors #}
-                    <div class="form-error m-1">
-                    {{ form_errors(removeVhostForm)}}
-                    </div>
-                    <div class="m-1">
-                        <div>Supprimer un hôte virtuelle</div> 
-                        {# remove form #}
-                        <div class="d-inline-flex ">
-                            <div class="m-1">
-                                {{ form_row(removeVhostForm.removeVhost.hostname) }}
+            {# supprimer un serveur #}
+            <div class="my-4 w-100">
+                <div>
+                    {{ form_start(removeVhostForm)}}
+                        {# {# <div class="row form-error m-1"> #}
+                        {{ form_errors(removeVhostForm)}}
+                        </div> 
+                            <div class="row m-1 ">
+                            <div>Supprimer un Vhost</div> 
+                            <div class="d-flex w-100">
+                                <div class="m-1 w-50">
+                                    {{ form_row(removeVhostForm.removeVhost.vhost) }}
+                                </div>
+                                <div class="m-1">
+                                    {{ form_row(removeVhostForm.removebtn) }}
+                                </div>
                             </div>
-                            <div class="m-1">
-                                {{ form_row(removeVhostForm.removeVhost.submit) }}
-                            </div>
-                        </div>
-                    </div>
-                    
-                {{ form_end(removeVhostForm)}}
+                        </div> 
+                        
+                    {{ form_end(removeVhostForm) }}
+                </div>
             </div>
+        </div>
     </div>
 </div>
 {% endblock %}
