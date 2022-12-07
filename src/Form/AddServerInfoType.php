@@ -27,17 +27,7 @@ class AddServerInfoType extends AbstractType
                         'message' => 'ip invalide',
                     ]),
                 ],
-            ])
-            // ->add('diskUsed')
-            // ->add('diskFree')
-            // ->add('diskSize')
-            // ->add('memSize')
-            // ->add('saveStateLast')
-            // ->add('osType')
-            // ->add('osVersion')
-            // ->add('createdAt')
-            // ->add('updatedAt')
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

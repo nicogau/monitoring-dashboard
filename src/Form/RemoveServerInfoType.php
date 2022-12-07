@@ -25,7 +25,7 @@ class RemoveServerInfoType extends AbstractType
             //         ]),
             //     ],
             // ])
-        ->add('servers', EntityType::class, [
+        ->add('server', EntityType::class, [
             'label' => false,
             'class' => ServerInfo::class,
             'choice_label' => 'ip'

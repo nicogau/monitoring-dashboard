@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\ServerInfo;
 use App\Form\AddServerInfoType;
 use App\Form\RemoveServerInfoType;
-use App\Form\ServerInfoType;
 use App\Repository\ServerInfoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +55,7 @@ class ServerController extends AbstractController
 
                 $this->addFlash('notice', "le serveur ({$server->getIp()}) a bien été ajouté à la liste ");
             } else {
-                $this->addFlash('warning', "le serveur ({$server->getIp()}) est déjà en base de données ");
+                $this->addFlash('error', "le serveur ({$server->getIp()}) est déjà en base de données ");
             } 
         }
 
@@ -65,6 +64,17 @@ class ServerController extends AbstractController
 
 
         if( $removeServerForm->isSubmitted() && $removeServerForm->isValid()){
+            // dd($removeServerForm->getData()['removeServer']['server']);
+            $server = $removeServerForm->getData()['removeServer']['server'];
+            try {
+                $em->remove($server);
+                $em->flush();
+                $this->addFlash('notice', "le serveur ({$server->getIp()}) a bien été supprimé de la liste ");
+
+            }
+            catch(Exception $e){
+                $this->addFlash('error', "aucun autre serveur à supprimer");
+            }
         } 
 
         if (!$removeServerForm->getClickedButton()) {
