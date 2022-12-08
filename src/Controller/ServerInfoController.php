@@ -16,9 +16,7 @@ class ServerInfoController extends AbstractController
     #[Route('/', name: 'app_server_info_index', methods: ['GET'])]
     public function index(ServerInfoRepository $serverInfoRepository): Response
     {
-        return $this->render('server_info/index.html.twig', [
-            'server_infos' => $serverInfoRepository->findAll(),
-        ]);
+       return $this->redirectToRoute('app_info');
     }
 
     #[Route('/new', name: 'app_server_info_new', methods: ['GET', 'POST'])]

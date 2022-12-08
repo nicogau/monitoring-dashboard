@@ -1,66 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ServerInfo{% endblock %}
+{% block title %}info serveur{% endblock %}
 
 {% block body %}
-    <h1>ServerInfo</h1>
+    <div class="container d-flex justify-content-center ">
+        <div class="mb-3">
+            <h3>information sur le serveur</h3>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ server_info.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ip</th>
+                        <td>{{ server_info.ip }}</td>
+                    </tr>
+                    <tr>
+                        <th>DiskUsed</th>
+                        <td>{{ server_info.diskUsed }}</td>
+                    </tr>
+                    <tr>
+                        <th>DiskFree</th>
+                        <td>{{ server_info.diskFree }}</td>
+                    </tr>
+                    <tr>
+                        <th>DiskSize</th>
+                        <td>{{ server_info.diskSize }}</td>
+                    </tr>
+                    <tr>
+                        <th>MemSize</th>
+                        <td>{{ server_info.memSize }}</td>
+                    </tr>
+                    <tr>
+                        <th>SaveStateLast</th>
+                        <td>{{ server_info.saveStateLast ? server_info.saveStateLast|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>OsType</th>
+                        <td>{{ server_info.osType }}</td>
+                    </tr>
+                    <tr>
+                        <th>OsVersion</th>
+                        <td>{{ server_info.osVersion }}</td>
+                    </tr>
+                    <tr>
+                        <th>CreatedAt</th>
+                        <td>{{ server_info.createdAt ? server_info.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>UpdatedAt</th>
+                        <td>{{ server_info.updatedAt ? server_info.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                </tbody>
+            </table>       
+        
+        </div>
+    </div>
+    
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ server_info.id }}</td>
-            </tr>
-            <tr>
-                <th>Ip</th>
-                <td>{{ server_info.ip }}</td>
-            </tr>
-            <tr>
-                <th>DiskUsed</th>
-                <td>{{ server_info.diskUsed }}</td>
-            </tr>
-            <tr>
-                <th>DiskFree</th>
-                <td>{{ server_info.diskFree }}</td>
-            </tr>
-            <tr>
-                <th>DiskSize</th>
-                <td>{{ server_info.diskSize }}</td>
-            </tr>
-            <tr>
-                <th>MemSize</th>
-                <td>{{ server_info.memSize }}</td>
-            </tr>
-            <tr>
-                <th>SaveStateLast</th>
-                <td>{{ server_info.saveStateLast ? server_info.saveStateLast|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>OsType</th>
-                <td>{{ server_info.osType }}</td>
-            </tr>
-            <tr>
-                <th>OsVersion</th>
-                <td>{{ server_info.osVersion }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ server_info.createdAt ? server_info.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ server_info.updatedAt ? server_info.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ server_info.name }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="d-flex flex-column justify-content-center  align-items-center">
+        <a class="btn btn-warning" href="{{ path('app_server_info_edit', {'id': server_info.id}) }}">modifier</a>
+        <a class="btn btn-primary my-1" href="{{ path('app_info') }}">retour à la liste</a>
+        {{ include('server_info/_delete_form.html.twig') }}
+    </div>
 
-    <a href="{{ path('app_server_info_index') }}">back to list</a>
-
-    <a href="{{ path('app_server_info_edit', {'id': server_info.id}) }}">edit</a>
-
-    {{ include('server_info/_delete_form.html.twig') }}
 {% endblock %}

@@ -8,9 +8,11 @@
         <div class="mb-3">
             <h1>modifier le serveur</h1>
                 {{ include('server_info/_form.html.twig', {'button_label': 'modifier'}) }}
-                <div class="d-flex justify-content-end align-items-center">
-                    <a class="btn-btn-primary" href="{{ path('app_server_info_index') }}">retour à la liste</a>
-                        {{ include('server_info/_delete_form.html.twig') }}
+                <div class="d-flex flex-column justify-content-center  align-items-center">
+                    <a class=" btn btn-primary my-1" href="{{ path('app_info') }}">retour à la liste</a>
+                        <div>
+                            {{ include('server_info/_delete_form.html.twig') }}
+                        </div>
                 </div>
         </div>
     </div>
