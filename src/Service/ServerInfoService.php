@@ -40,8 +40,11 @@ class ServerInfoService {
             throw new LogicException('failed to start tls script');
         }
         // succeeded
+        // remove \n and \r\n
+        // dd($process->getOutput());
+        $cleanOutput = str_replace(["\n", "\r"],"",$process->getOutput());
         // need to validate data is json format
-        $jsonError =  $this->validateJson($process->getOutput());
+        $jsonError =  $this->validateJson($cleanOutput);
         if ( count($jsonError) > 0){
             throw new LogicException('invalid json format');
         }

@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#! /usr/bin/env bash
 if [ "$#" -ne 1 ]; then
   exit 1
 fi
@@ -7,18 +6,28 @@ fi
 domain="$1"
 has_cert=false
 
+rm_quotes() {
+  if [ "$#" -ne 1 ]; then
+    exit 1
+  fi
+  echo "$1" | tr -d '"'
+}
+
+
 # one liner to get certificate expirency date field
 # openssl s_client -showcerts -connect "$server":443 2>/dev/null <<< "Q" | openssl x509 -inform pem -noout -text | awk 'BEGIN {FS=": "} /Not After/{print $2 }'
 
 # get tls certificate
 # echo "Q" used to stop connection
-cert=$(openssl s_client -showcerts -connect "$domain":443 2>/dev/null <<< "Q")
+cert=$(echo 'Q' | openssl s_client -showcerts -connect "$domain":443 2>/dev/null )
 
 if [ -n "$cert" ]; then
     # expirency date of a certificate for a given server
     exp_date=$(echo "$cert" | openssl x509 -noout -enddate 2>/dev/null | cut -d "=" -f 2)
     # issuer of the certificate
     issuer=$(echo "$cert" | openssl x509 -noout -issuer 2>/dev/null )
+    # remove quotes from $issuer
+    issuer=$(rm_quotes "$issuer")
 else
     issuer="undefined"
 fi
