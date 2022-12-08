@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vhost{% endblock %}
+
+{% block body %}
+    <h1>Vhost</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vhost.id }}</td>
+            </tr>
+            <tr>
+                <th>IsActive</th>
+                <td>{{ vhost.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>TlsExpDate</th>
+                <td>{{ vhost.tlsExpDate ? vhost.tlsExpDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>TlsRegistrarName</th>
+                <td>{{ vhost.tlsRegistrarName }}</td>
+            </tr>
+            <tr>
+                <th>Hostname</th>
+                <td>{{ vhost.hostname }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ vhost.createdAt ? vhost.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ vhost.updatedAt ? vhost.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>TlsDayleft</th>
+                <td>{{ vhost.tlsDayleft }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vhost_index') }}">back to list</a>
+
+    <a href="{{ path('app_vhost_edit', {'id': vhost.id}) }}">edit</a>
+
+    {{ include('vhost/_delete_form.html.twig') }}
+{% endblock %}

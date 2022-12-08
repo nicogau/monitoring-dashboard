@@ -56,6 +56,9 @@ class ServerInfo
     #[ORM\OneToMany(mappedBy: 'server', targetEntity: Vhost::class)]
     private Collection $vhosts;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->vhosts = new ArrayCollection();
@@ -217,4 +220,22 @@ class ServerInfo
 
         return $this;
     }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return "{$this->name} {$this->ip}";
+    }
+
 }

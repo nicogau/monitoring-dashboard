@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ServerInfo index{% endblock %}
+
+{% block body %}
+    <h1>ServerInfo index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Ip</th>
+                <th>DiskUsed</th>
+                <th>DiskFree</th>
+                <th>DiskSize</th>
+                <th>MemSize</th>
+                <th>SaveStateLast</th>
+                <th>OsType</th>
+                <th>OsVersion</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for server_info in server_infos %}
+            <tr>
+                <td>{{ server_info.id }}</td>
+                <td>{{ server_info.ip }}</td>
+                <td>{{ server_info.diskUsed }}</td>
+                <td>{{ server_info.diskFree }}</td>
+                <td>{{ server_info.diskSize }}</td>
+                <td>{{ server_info.memSize }}</td>
+                <td>{{ server_info.saveStateLast ? server_info.saveStateLast|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ server_info.osType }}</td>
+                <td>{{ server_info.osVersion }}</td>
+                <td>{{ server_info.createdAt ? server_info.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ server_info.updatedAt ? server_info.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ server_info.name }}</td>
+                <td>
+                    <a href="{{ path('app_server_info_show', {'id': server_info.id}) }}">show</a>
+                    <a href="{{ path('app_server_info_edit', {'id': server_info.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_server_info_new') }}">Create new</a>
+{% endblock %}

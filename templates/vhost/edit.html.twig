@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Vhost{% endblock %}
+
+{% block body %}
+    <h1>Edit Vhost</h1>
+
+    {{ include('vhost/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_vhost_index') }}">back to list</a>
+
+    {{ include('vhost/_delete_form.html.twig') }}
+{% endblock %}

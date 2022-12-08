@@ -8,15 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends AbstractController
+class InfoController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_info')]
     public function index(ServerInfoRepository $serverRepo, VhostRepository $vhostRepo): Response
     {
         $servers = $serverRepo->findAll();
         $orphansVhost = $vhostRepo->findByServer(null) ;
 
-        return $this->render('home/index.html.twig', [
+        return $this->render('info/index.html.twig', [
             'servers' => $servers,
             'orphansVhost' => $orphansVhost,
         ]);

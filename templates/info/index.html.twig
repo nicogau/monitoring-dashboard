@@ -10,6 +10,10 @@
         {# server infos #}
         <div class="mb-3">
             <h3 class="text-center my-4">Infos Serveur:</h3>
+
+            <div class="d-flex justify-content-end" >
+                <a class="btn btn-success" href="{{ path('app_server_info_new') }}">ajouter un serveur</a>
+            </div> 
             <table class="table">
                 <thead>
                 <tr>
@@ -21,6 +25,8 @@
                     <th>os / version</th>
                     <th>vhosts</th>
                     <th>dern. modif</th>
+                    <th>actions</th>
+
                 </tr> 
                 </thead>
                 <tbody>
@@ -34,10 +40,10 @@
                                 <td>{{server.memSize}}</td>
                                 <td>{{server.osType}}  {{server.osVersion}} </td>
                                 <td>
-                                    <select name="vhosts">
-                                        <option value="">choisir un vhost</option>
+                                    <select class="form-select form-select-sm" name="vhosts">
+                                        <option value="">---</option>
                                         {% for vhost in server.vhosts %}
-                                            <option value="{vhost.id}">{vhost}</option>
+                                            <option value="{{vhost.id}}">{{vhost}}</option>
                                         {% endfor %}
                                     </select>
                                 </td>
@@ -46,6 +52,10 @@
                                         ? server.updatedAt |format_datetime('short', 'none', locale='fr') 
                                         : server.createdAt |format_datetime('short', 'none', locale='fr') 
                                     }}
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="{{ path('app_server_info_show', {'id': server.id}) }}">afficher</a>
+                                    <a class="btn btn-sm btn-warning" href="{{ path('app_server_info_edit', {'id': server.id}) }}">modifier</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -74,8 +84,8 @@
                             <td>{{vhost.tlsExpDate}}</td>
                             <td>{{vhost.tlsDayLeft}}</td>
                             <td>
-                                <span><a href="">modifier</a><span> 
-                                <span><a href="">supprimer</a><span> 
+                                <span><a class="btn btn-sm btn-warning" href="">modifier</a><span> 
+                                <span><a class="btn btn-sm btn-danger" href="">supprimer</a><span> 
                             </td>
                         </tr>
                         {% endfor %}
