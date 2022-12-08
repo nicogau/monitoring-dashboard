@@ -43,6 +43,9 @@ class Vhost
     #[ORM\ManyToOne(inversedBy: 'vhosts')]
     private ?ServerInfo $server = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tlsDayleft = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -130,6 +133,24 @@ class Vhost
     public function setServer(?ServerInfo $server): self
     {
         $this->server = $server;
+
+        return $this;
+    }
+
+    public function __toString(): string 
+    {
+        $exp_date_msg = $this->tlsExpDate ? `{cert: $this->tlsExpDate}days left` : '';
+        return "{$this->hostname} {$exp_date_msg}";
+    }
+
+    public function getTlsDayleft(): ?string
+    {
+        return $this->tlsDayleft;
+    }
+
+    public function setTlsDayleft(?string $tlsDayleft): self
+    {
+        $this->tlsDayleft = $tlsDayleft;
 
         return $this;
     }

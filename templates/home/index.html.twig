@@ -1,12 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Page d'accueil{% endblock %}
+{# home page #}
+{% block title %}infos{% endblock %}
 
 {% block body %}
 
 <div class="home-wrapper">
     <div class="container">
-        <h3 class="text-center my-4">Infos Serveur</h3>
+        {# server infos #}
+        <div class="mb-3">
+            <h3 class="text-center my-4">Infos Serveur:</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ip</th>
+                    <th>disq. utilisé</th>
+                    <th>disq. libre</th>
+                    <th>disq. total</th>
+                    <th>mem. total</th>
+                    <th>os / version</th>
+                    <th>vhosts</th>
+                    <th>dern. modif</th>
+                </tr> 
+                </thead>
+                <tbody>
+                    {% if servers is defined and servers is not empty %}
+                        {% for server in servers %}
+                            <tr>
+                                <td>{{server.ip}}</td>
+                                <td>{{server.diskUsed}}</td>
+                                <td>{{server.diskFree}}</td>
+                                <td>{{server.diskSize}}</td>
+                                <td>{{server.memSize}}</td>
+                                <td>{{server.osType}}  {{server.osVersion}} </td>
+                                <td>
+                                    <select name="vhosts">
+                                        <option value="">choisir un vhost</option>
+                                        {% for vhost in server.vhosts %}
+                                            <option value="{vhost.id}">{vhost}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    {{ server.updatedAt 
+                                        ? server.updatedAt |format_datetime('short', 'none', locale='fr') 
+                                        : server.createdAt |format_datetime('short', 'none', locale='fr') 
+                                    }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        {# orphan vhosts #}
+        <div class="mb-3">
+            <h3 class="text-center my-4">Vhosts non rattachés à un serveur:</h3>
+            <div class="w-75">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>domaine</th>
+                            <th>tls date expiration</th>
+                            <th>tls jours restant</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    {% if orphansVhost is defined and orphansVhost is not empty %}
+                        {% for vhost in orphansVhost  %}
+                        <tr>
+                            <td>{{vhost.hostname}}</td>
+                            <td>{{vhost.tlsExpDate}}</td>
+                            <td>{{vhost.tlsDayLeft}}</td>
+                            <td>
+                                <span><a href="">modifier</a><span> 
+                                <span><a href="">supprimer</a><span> 
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+            
+        </div>
+        
     </div>
 </div>
 {% endblock %}

@@ -14,9 +14,11 @@ class HomeController extends AbstractController
     public function index(ServerInfoRepository $serverRepo, VhostRepository $vhostRepo): Response
     {
         $servers = $serverRepo->findAll();
+        $orphansVhost = $vhostRepo->findByServer(null) ;
 
         return $this->render('home/index.html.twig', [
             'servers' => $servers,
+            'orphansVhost' => $orphansVhost,
         ]);
     }
 }
