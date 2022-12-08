@@ -13,11 +13,11 @@
                 <div>
                     {{ form_start(addVhostForm)}}
                         {# errors #}
-                        <div class="row form-error m-1">
+                        <div class="form-error m-1">
                         {{ form_errors(addVhostForm)}}
                         </div>
-                        <div class="row m-1">
-                            <div>Ajouter un nouveau Vhost</div> 
+                        <div class="m-1">
+                            <div class="px-2">Ajouter un nouveau Vhost</div> 
                             {# add form #}
                             <div class="d-flex w-100">
                                 <div class="m-1 w-50">
@@ -39,8 +39,8 @@
                         {# {# <div class="row form-error m-1"> #}
                         {{ form_errors(removeVhostForm)}}
                         </div> 
-                            <div class="row m-1 ">
-                            <div>Supprimer un Vhost</div> 
+                            <div class="m-1">
+                            <div class="px-2">Supprimer un Vhost</div> 
                             <div class="d-flex w-100">
                                 <div class="m-1 w-50">
                                     {{ form_row(removeVhostForm.removeVhost.vhost) }}
