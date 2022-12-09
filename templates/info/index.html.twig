@@ -83,8 +83,8 @@
                         {% for vhost in orphansVhost  %}
                         <tr>
                             <td>{{vhost.hostname}}</td>
-                            <td>{{vhost.tlsExpDate}}</td>
-                            <td>{{vhost.tlsDayLeft}}</td>
+                            <td>{{vhost.tlsExpDate is not null ? vhost.tlsExpDate | format_datetime('short', 'none', locale='fr') : ''}}</td>
+                            <td>{{ vhost.tlsDayLeft is not null ? vhost.tlsDayLeft : ''}}</td>
                             <td>
                                 <span><a class="btn btn-sm btn-primary" href="{{ path('app_vhost_show', {'id': vhost.id}) }}">afficher</a></span>
                                 <span><a class="btn btn-sm btn-warning" href="{{ path('app_vhost_edit', {'id': vhost.id}) }}">modifier</a><span> 

@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class VhostInfoService {
+class TlsService {
     private  string $scriptFolder;
     private const GETTLSSCRIPT = 'gettls.sh';
     private const HELLOSCRIPT = 'hello.sh';

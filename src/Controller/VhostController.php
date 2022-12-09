@@ -5,7 +5,8 @@ namespace App\Controller;
 use App\Entity\Vhost;
 use App\Form\VhostType;
 use App\Repository\VhostRepository;
-use App\Service\VhostInfoService;
+use App\Service\TlsService;
+use App\Service\VhostService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,8 +29,7 @@ class VhostController extends AbstractController
     public function updateTlsData(
       Request $request, 
       VhostRepository $vhostRepository, 
-      VhostInfoService $serverInfo,
-      EntityManagerInterface $em
+      VhostService $vhostService
     ): Response
     {
         if ($this->isCsrfTokenValid('updatetls', $request->request->get('_token'))) {
@@ -37,27 +37,42 @@ class VhostController extends AbstractController
             if ( count($vhostList) > 0) {
               // vhost list is not empty
               try {
-                $vhost = $vhostList[0];
-                // TODO: code the logic to get tls data for a given server
-                // and update vhost in base
-                $tlsInfo = (object) $serverInfo->getTlsCert($vhost->getHostname());
-                // does a certificate exist?
-                if ( isset($tlsInfo->cert) && $tlsInfo->cert) {
-                  $vhost->setTlsRegistrarName($tlsInfo->issuer);
-                  $vhost->setTlsExpDate($tlsInfo->exp);
-                  $vhost->setTlsDayleft($tlsInfo->days_left);
-                  $em->persist($vhost);
-                  $em->flush();
+                foreach($vhostList as $vhost) {
+                  $vhostService->updateTlsInfoById($vhost->getId());
                 }
-
-                  $this->addFlash('notice', "mise à jour des informations éffectué");
-              } 
+                $this->addFlash('notice', "mise à jour des informations éffectué");
+                }
               catch(Exception $err) {
                   $this->addFlash('error', "impossible de récuperer les informations");
               }
             } 
         }
 
+        return $this->redirectToRoute('app_vhost_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/updatetlsdata/{id}', name: 'app_vhost_updatetlsdata_id', methods: ['POST'])]
+    public function updateTlsDataById(
+      string $id,
+      Request $request, 
+      VhostRepository $vhostRepository, 
+      VhostService $vhostService
+    ): Response
+    {
+        if ($this->isCsrfTokenValid('updatetls', $request->request->get('_token'))) {
+          try {
+            $vhost = $vhostService->updateTlsInfoById($id);
+            if ($vhost) {
+              $this->addFlash('notice', "mise à jour des informations éffectué");
+            }
+            else {
+              $this->addFlash('notice', "la mise à jour n\'a pas pu être éffectué");
+            }
+          }
+          catch(Exception $err) {
+              $this->addFlash('error', "impossible de récuperer les informations");
+          }
+        } 
         return $this->redirectToRoute('app_vhost_index', [], Response::HTTP_SEE_OTHER);
     }
 

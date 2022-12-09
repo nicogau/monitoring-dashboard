@@ -15,6 +15,7 @@ class InfoController extends AbstractController
     {
         $servers = $serverRepo->findAll();
         $orphansVhost = $vhostRepo->findByServer(null) ;
+        /* dd($orphansVhost); */
 
         return $this->render('info/index.html.twig', [
             'servers' => $servers,

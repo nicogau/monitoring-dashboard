@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Form\TestVhostType;
-use App\Service\VhostInfoService;
+use App\Service\TlsService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TestScriptController extends AbstractController
 {
     #[Route('/test', name: 'app_test')]
-    public function index( Request $request, VhostInfoService $serverInfo ): Response
+    public function index( Request $request, TlsService $tlsService ): Response
     {
         $tlsData = null;
 
@@ -35,7 +35,7 @@ class TestScriptController extends AbstractController
             try {
                 $domain = $testVhostForm->getData()['testVhost']['hostname'];
                 /* $tlsData =  json_decode(json_encode($serverInfo->getTlsCert($domain)), true); */
-                $tlsData =  $serverInfo->getTlsCert($domain);
+                $tlsData =  $tlsService->getTlsCert($domain);
                 /* dd($tlsData); */
 
             } catch(Exception $e) {
