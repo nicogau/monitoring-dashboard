@@ -15,13 +15,13 @@ class VhostService {
         // get tls info
         $tlsInfo = (object) $this->tlsService->getTlsCert($vhost->getHostname());
         // does a certificate exist?
-        if ( isset($tlsInfo->cert) && $tlsInfo->cert) {
+        /* if ( isset($tlsInfo->cert) && $tlsInfo->cert) { */
           $vhost->setTlsRegistrarName($tlsInfo->issuer);
           $vhost->setTlsExpDate($tlsInfo->exp);
           $vhost->setTlsDayleft($tlsInfo->days_left);
 
           return $vhost;
-        }
+        /* } */
       }
       catch(Exception $err) {
         throw $err;

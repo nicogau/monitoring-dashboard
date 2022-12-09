@@ -17,7 +17,6 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Id</th>
                         <th>IsActive</th>
                         <th>TlsExpDate</th>
                         <th>TlsRegistrarName</th>
@@ -31,7 +30,6 @@
                 <tbody>
                 {% for vhost in vhosts %}
                     <tr>
-                        <td>{{ vhost.id }}</td>
                         <td>{{ vhost.isActive ? 'Yes' : 'No' }}</td>
                         <td>{{ vhost.tlsExpDate ? vhost.tlsExpDate|date('Y-m-d') : '' }}</td>
                         <td>{{ vhost.tlsRegistrarName }}</td>
