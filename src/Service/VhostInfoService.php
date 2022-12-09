@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ServerInfoService {
+class VhostInfoService {
     private  string $scriptFolder;
     private const GETTLSSCRIPT = 'gettls.sh';
     private const HELLOSCRIPT = 'hello.sh';
@@ -51,6 +51,10 @@ class ServerInfoService {
         }
 
         $tlsData = json_decode($process->getOutput()); 
+        // convert 'true' / 'false' string to boolean 
+        if (isset($tlsData->cert)) {
+          $tlsData->cert = filter_var( $tlsData->cert, FILTER_VALIDATE_BOOLEAN);
+        }
         // convert timestamp to  Datetime
         if ( isset($tlsData->exp) 
           && !empty($tlsData->exp) 

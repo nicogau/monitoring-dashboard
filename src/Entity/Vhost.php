@@ -139,8 +139,8 @@ class Vhost
 
     public function __toString(): string 
     {
-        $exp_date_msg = $this->tlsExpDate ? `{cert: $this->tlsExpDate}days left` : '';
-        return "{$this->hostname} {$exp_date_msg}";
+        $expDateMsg = $this->tlsDayleft ? "cert:{$this->tlsDayleft}days left" : '';
+        return "{$this->hostname} {$expDateMsg}";
     }
 
     public function getTlsDayleft(): ?string

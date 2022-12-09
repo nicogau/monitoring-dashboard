@@ -3,15 +3,12 @@
 namespace App\Controller;
 
 use App\Form\TestVhostType;
-use App\Kernel;
-use App\Service\ServerInfoService;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\VhostInfoService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -20,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TestScriptController extends AbstractController
 {
     #[Route('/test', name: 'app_test')]
-    public function index( Request $request, ServerInfoService $serverInfo ): Response
+    public function index( Request $request, VhostInfoService $serverInfo ): Response
     {
         $tlsData = null;
 

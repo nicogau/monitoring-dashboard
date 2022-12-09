@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Vhost;
 use App\Form\VhostType;
 use App\Repository\VhostRepository;
+use App\Service\VhostInfoService;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,16 +25,32 @@ class VhostController extends AbstractController
     }
 
     #[Route('/updatetlsdata', name: 'app_vhost_updatetlsdata', methods: ['POST'])]
-    public function updateTlsData(Request $request, VhostRepository $vhostRepository): Response
+    public function updateTlsData(
+      Request $request, 
+      VhostRepository $vhostRepository, 
+      VhostInfoService $serverInfo,
+      EntityManagerInterface $em
+    ): Response
     {
         if ($this->isCsrfTokenValid('updatetls', $request->request->get('_token'))) {
             $vhostList = $vhostRepository->findAll();
             if ( count($vhostList) > 0) {
               // vhost list is not empty
               try {
-                $firstVhost = $vhostList[0];
+                $vhost = $vhostList[0];
                 // TODO: code the logic to get tls data for a given server
                 // and update vhost in base
+                $tlsInfo = (object) $serverInfo->getTlsCert($vhost->getHostname());
+                // does a certificate exist?
+                if ( isset($tlsInfo->cert) && $tlsInfo->cert) {
+                  $vhost->setTlsRegistrarName($tlsInfo->issuer);
+                  $vhost->setTlsExpDate($tlsInfo->exp);
+                  $vhost->setTlsDayleft($tlsInfo->days_left);
+                  $em->persist($vhost);
+                  $em->flush();
+                }
+
+                  $this->addFlash('notice', "mise à jour des informations éffectué");
               } 
               catch(Exception $err) {
                   $this->addFlash('error', "impossible de récuperer les informations");
