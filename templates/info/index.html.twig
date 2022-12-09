@@ -5,7 +5,7 @@
 
 {% block body %}
 
-<div class="home-wrapper">
+<div class="info-wrapper">
     <div class="container">
         {# server infos #}
         <div class="mb-3">
@@ -86,8 +86,8 @@
                             <td>{{vhost.tlsExpDate}}</td>
                             <td>{{vhost.tlsDayLeft}}</td>
                             <td>
-                                <span><a class="btn btn-sm btn-warning" href="">modifier</a><span> 
-                                <span><a class="btn btn-sm btn-danger" href="">supprimer</a><span> 
+                                <span><a class="btn btn-sm btn-primary" href="{{ path('app_vhost_show', {'id': vhost.id}) }}">afficher</a></span>
+                                <span><a class="btn btn-sm btn-warning" href="{{ path('app_vhost_edit', {'id': vhost.id}) }}">modifier</a><span> 
                             </td>
                         </tr>
                         {% endfor %}

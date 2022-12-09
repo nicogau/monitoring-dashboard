@@ -37,9 +37,10 @@ class TestScriptController extends AbstractController
         if ($testVhostForm->isSubmitted() && $testVhostForm->isValid()) {
             try {
                 $domain = $testVhostForm->getData()['testVhost']['hostname'];
-                $tlsData =  json_decode(json_encode($serverInfo->getTlsCert($domain)), true);
-                // dd($tlsData);
-                // dd($serverInfo->getTlsCert($domain));
+                /* $tlsData =  json_decode(json_encode($serverInfo->getTlsCert($domain)), true); */
+                $tlsData =  $serverInfo->getTlsCert($domain);
+                /* dd($tlsData); */
+
             } catch(Exception $e) {
                 $this->addFlash('error', "impossible de récuperer les informations");
             }

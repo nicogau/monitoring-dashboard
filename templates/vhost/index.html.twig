@@ -3,45 +3,56 @@
 {% block title %}Vhost index{% endblock %}
 
 {% block body %}
-    <h1>Vhost index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>IsActive</th>
-                <th>TlsExpDate</th>
-                <th>TlsRegistrarName</th>
-                <th>Hostname</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>TlsDayleft</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for vhost in vhosts %}
-            <tr>
-                <td>{{ vhost.id }}</td>
-                <td>{{ vhost.isActive ? 'Yes' : 'No' }}</td>
-                <td>{{ vhost.tlsExpDate ? vhost.tlsExpDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ vhost.tlsRegistrarName }}</td>
-                <td>{{ vhost.hostname }}</td>
-                <td>{{ vhost.createdAt ? vhost.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ vhost.updatedAt ? vhost.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ vhost.tlsDayleft }}</td>
-                <td>
-                    <a href="{{ path('app_vhost_show', {'id': vhost.id}) }}">show</a>
-                    <a href="{{ path('app_vhost_edit', {'id': vhost.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="info-wrapper">
+    <div class="container">
+        {# server infos #}
+        <div class="mb-3">
+            <h3 class="text-center my-4">Liste des Vhosts</h3>
 
-    <a href="{{ path('app_vhost_new') }}">Create new</a>
+            <div class="d-flex justify-content-end my-2" >
+                <a class="btn btn-success mx-1" href="{{ path('app_vhost_new') }}">ajouter un Vhost</a>
+                  {{ include('vhost/_update_tls_certificate.html.twig') }}
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>IsActive</th>
+                        <th>TlsExpDate</th>
+                        <th>TlsRegistrarName</th>
+                        <th>Hostname</th>
+                        <th>CreatedAt</th>
+                        <th>UpdatedAt</th>
+                        <th>TlsDayleft</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for vhost in vhosts %}
+                    <tr>
+                        <td>{{ vhost.id }}</td>
+                        <td>{{ vhost.isActive ? 'Yes' : 'No' }}</td>
+                        <td>{{ vhost.tlsExpDate ? vhost.tlsExpDate|date('Y-m-d') : '' }}</td>
+                        <td>{{ vhost.tlsRegistrarName }}</td>
+                        <td>{{ vhost.hostname }}</td>
+                        <td>{{ vhost.createdAt ? vhost.createdAt|date('Y-m-d ') : '' }}</td>
+                        <td>{{ vhost.updatedAt ? vhost.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ vhost.tlsDayleft }}</td>
+                        <td>
+                            <a  class="btn btn-sm btn-primary" href="{{ path('app_vhost_show', {'id': vhost.id}) }}">afficher</a>
+                            <a  class="btn btn-sm btn-warning" href="{{ path('app_vhost_edit', {'id': vhost.id}) }}">modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9">aucun Vhost dans la liste</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
 {% endblock %}

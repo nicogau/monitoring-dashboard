@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Exception;
 use LogicException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
@@ -41,13 +42,30 @@ class ServerInfoService {
         }
         // succeeded
         // remove \n and \r\n
-        // dd($process->getOutput());
         $cleanOutput = str_replace(["\n", "\r"],"",$process->getOutput());
+         /* dd($process->getOutput()); */
         // need to validate data is json format
         $jsonError =  $this->validateJson($cleanOutput);
         if ( count($jsonError) > 0){
             throw new LogicException('invalid json format');
         }
-        return  json_decode($process->getOutput());
+
+        $tlsData = json_decode($process->getOutput()); 
+        // convert timestamp to  Datetime
+        if ( isset($tlsData->exp) 
+          && !empty($tlsData->exp) 
+          && strlen($tlsData->exp ) > 0
+          && intval($tlsData->exp) == $tlsData->exp
+        ) {
+          try {
+            $tlsData->exp = (new \DateTime())->setTimestamp($tlsData->exp);
+          }
+          catch(Exception $err) {
+            throw new LogicException('invalid exp date format');
+          }
+        } else {
+          $tlsData->exp = null;
+        }
+        return $tlsData;
     }
 }

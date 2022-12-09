@@ -36,12 +36,26 @@
         {% if tlsData is not null and tlsData is defined %}
             <div class="w-50">
                 <table class="table table-bordered">
-                    {% for key, value in tlsData %}
                         <tr>
-                            <td><em>{{ key }}</em></td>
-                            <td>{{ value }}</td>
+                            <td><em>domaine</em></td>
+                            <td>{{ tlsData.domain is defined ? tlsData.domain : ""  }}</td>
                         </tr>    
-                    {% endfor %}
+                        <tr>
+                            <td><em>émetteur</em></td>
+                            <td>{{ tlsData.issuer is defined? tlsData.issuer : ""  }}</td>
+                        </tr>    
+                        <tr>
+                            <td><em>certificat existe</em></td>
+                            <td>{{ tlsData.cert is defined ? (tlsData.cert == 'true' ? 'oui' : 'non') : ""  }}</td>
+                        </tr>
+                        <tr>
+                            <td><em>date d'expiration</em></td>
+                            <td>{{ tlsData.exp is defined  and tlsData.exp is not null ? tlsData.exp | date("d-m-Y ", "Europe/Paris") : "" }}</td>
+                        </tr>
+                        <tr>
+                            <td><em>nombre de jours restants</em></td>
+                            <td>{{ tlsData.days_left is defined ?  tlsData.days_left : ""  }}</td>
+                        </tr>
                 </table>
             </div>
             

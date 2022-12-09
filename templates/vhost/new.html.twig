@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Vhost{% endblock %}
+{% block title %}ajouter un Vhost{% endblock %}
 
 {% block body %}
-    <h1>Create new Vhost</h1>
 
-    {{ include('vhost/_form.html.twig') }}
+    <div class="container d-flex justify-content-center ">
+        <div class="mb-3">
+          <h3>Ajouter un Vhost</h3>
+            {{ include('vhost/_form.html.twig') }}
+            <div class="d-flex justify-content-center">
+              <a class="btn btn-primary" href="{{ path('app_vhost_index') }}">retour à la liste</a>
+            </div>
+        </div>
+    </div>
 
-    <a href="{{ path('app_vhost_index') }}">back to list</a>
 {% endblock %}

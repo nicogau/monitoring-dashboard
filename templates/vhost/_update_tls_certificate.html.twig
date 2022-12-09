@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('app_vhost_updatetlsdata') }}" onsubmit="return confirm('êtes vous sûr de vouloir mettre à jour les
+  certificats?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('updatetls') }}">
+    <button class="btn btn-warning">rafraichir les certificats</button>
+</form>

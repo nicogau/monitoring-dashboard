@@ -9,7 +9,7 @@
             <table class="table">
                 <tbody>
                     <tr>
-                        <th>Name</th>
+                        <th>nom</th>
                         <td>{{ server_info.name }}</td>
                     </tr>
                     <tr>
@@ -17,40 +17,40 @@
                         <td>{{ server_info.ip }}</td>
                     </tr>
                     <tr>
-                        <th>DiskUsed</th>
+                        <th>disq. utilisé</th>
                         <td>{{ server_info.diskUsed }}</td>
                     </tr>
                     <tr>
-                        <th>DiskFree</th>
+                        <th>disq. libre</th>
                         <td>{{ server_info.diskFree }}</td>
                     </tr>
                     <tr>
-                        <th>DiskSize</th>
+                        <th>disq. total</th>
                         <td>{{ server_info.diskSize }}</td>
                     </tr>
                     <tr>
-                        <th>MemSize</th>
+                        <th>mem. total</th>
                         <td>{{ server_info.memSize }}</td>
                     </tr>
                     <tr>
-                        <th>SaveStateLast</th>
+                        <th>dern. sauvegarde</th>
                         <td>{{ server_info.saveStateLast ? server_info.saveStateLast|date('Y-m-d H:i:s') : '' }}</td>
                     </tr>
                     <tr>
-                        <th>OsType</th>
+                        <th>os</th>
                         <td>{{ server_info.osType }}</td>
                     </tr>
                     <tr>
-                        <th>OsVersion</th>
+                        <th>version</th>
                         <td>{{ server_info.osVersion }}</td>
                     </tr>
                     <tr>
-                        <th>CreatedAt</th>
-                        <td>{{ server_info.createdAt ? server_info.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <th>date de création</th>
+                        <td>{{ server_info.createdAt ? server_info.createdAt|date('Y-m-d') : '' }}</td>
                     </tr>
                     <tr>
-                        <th>UpdatedAt</th>
-                        <td>{{ server_info.updatedAt ? server_info.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <th>dern. modif.</th>
+                        <td>{{ server_info.updatedAt ? server_info.updatedAt|date('Y-m-d') : '' }}</td>
                     </tr>
                 </tbody>
             </table>       

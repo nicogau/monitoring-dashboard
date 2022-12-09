@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Vhost;
 use App\Form\VhostType;
 use App\Repository\VhostRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,27 @@ class VhostController extends AbstractController
         return $this->render('vhost/index.html.twig', [
             'vhosts' => $vhostRepository->findAll(),
         ]);
+    }
+
+    #[Route('/updatetlsdata', name: 'app_vhost_updatetlsdata', methods: ['POST'])]
+    public function updateTlsData(Request $request, VhostRepository $vhostRepository): Response
+    {
+        if ($this->isCsrfTokenValid('updatetls', $request->request->get('_token'))) {
+            $vhostList = $vhostRepository->findAll();
+            if ( count($vhostList) > 0) {
+              // vhost list is not empty
+              try {
+                $firstVhost = $vhostList[0];
+                // TODO: code the logic to get tls data for a given server
+                // and update vhost in base
+              } 
+              catch(Exception $err) {
+                  $this->addFlash('error', "impossible de récuperer les informations");
+              }
+            } 
+        }
+
+        return $this->redirectToRoute('app_vhost_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/new', name: 'app_vhost_new', methods: ['GET', 'POST'])]
@@ -75,4 +97,6 @@ class VhostController extends AbstractController
 
         return $this->redirectToRoute('app_vhost_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }

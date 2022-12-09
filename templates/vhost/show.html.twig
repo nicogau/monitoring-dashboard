@@ -3,48 +3,56 @@
 {% block title %}Vhost{% endblock %}
 
 {% block body %}
-    <h1>Vhost</h1>
-
-    <table class="table">
+<div class="info-wrapper">
+    <div class="container d-flex justify-content-center ">
+    {# server infos #}
+    <div class="mb-3">
+      <h3 class="text-center my-4">information sur le Vhost</h3>
+      <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ vhost.id }}</td>
+                <th>nom d'hote</th>
+                <td>{{ vhost.hostname }}</td>
             </tr>
             <tr>
                 <th>IsActive</th>
                 <td>{{ vhost.isActive ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>TlsExpDate</th>
-                <td>{{ vhost.tlsExpDate ? vhost.tlsExpDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>TlsRegistrarName</th>
+                <th>Registrar TLS</th>
                 <td>{{ vhost.tlsRegistrarName }}</td>
             </tr>
             <tr>
-                <th>Hostname</th>
-                <td>{{ vhost.hostname }}</td>
+                <th>TlsExpDate</th>
+                <td>{{ vhost.tlsExpDate ? vhost.tlsExpDate|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>CreatedAt</th>
-                <td>{{ vhost.createdAt ? vhost.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ vhost.updatedAt ? vhost.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>TlsDayleft</th>
+                <th>nb jours avant expiration</th>
                 <td>{{ vhost.tlsDayleft }}</td>
             </tr>
-        </tbody>
-    </table>
+            <tr>
+                <th>serveur</th>
+                <td>{{ vhost.server }}</td>
+            </tr>
+            <tr>
+                <th>date de création</th>
+                <td>{{ vhost.updatedAt ? vhost.createdAt|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>dern. modif.</th>
+                <td>{{ vhost.updatedAt ? vhost.updatedAt|date('Y-m-d') : '' }}</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+</div>
 
-    <a href="{{ path('app_vhost_index') }}">back to list</a>
+<div class="d-flex flex-column justify-content-center  align-items-center">
+  <a class="btn btn-warning" href="{{ path('app_vhost_edit', {'id': vhost.id}) }}">modifier</a>
+  <a class="btn btn-primary my-1" href="{{ path('app_vhost_index') }}">retour à la liste</a>
+  {{ include('vhost/_delete_form.html.twig') }}
+</div>
 
-    <a href="{{ path('app_vhost_edit', {'id': vhost.id}) }}">edit</a>
 
-    {{ include('vhost/_delete_form.html.twig') }}
 {% endblock %}
