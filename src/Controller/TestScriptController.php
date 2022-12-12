@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\TestVhostType;
+use App\Service\SshService;
 use App\Service\TlsService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,6 +47,16 @@ class TestScriptController extends AbstractController
         return $this->renderForm('test_script/index.html.twig', [
             'testVhostForm' => $testVhostForm,
             'tlsData' => $tlsData
+        ]);
+    }
+
+    #[Route('/testssh', name: 'app_test_ssh')]
+    public function testssh( SshService $sshService ): Response
+    {
+        $resPty = $sshService->testPty();
+        dd($resPty);
+        return $this->renderForm('test_script/test_ssh.html.twig', [
+          'resPty' => $resPty,
         ]);
     }
 }

@@ -21,7 +21,7 @@ class TlsService {
     private function getScript(string $scriptName) {
         return "{$this->scriptFolder}/{$scriptName}";
     }
-
+    
     private function validateJson(string $data) {
         $errors = $this->validator->validate($data, new Assert\Json );
         return $errors;

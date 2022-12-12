@@ -1,4 +1,5 @@
 #! /usr/bin/env bash
+
 if [ "$#" -ne 1 ]; then
   exit 1
 fi
@@ -35,8 +36,6 @@ if [ -n "$cert" ]; then
 else
     issuer=''
 fi
-
-
 # calculate the number of days left to expirency
 if [ -n "$exp_date" ]; then
     diff_days=$((($(date -d "$exp_date" '+%s') - $(date  '+%s'))/86400))
