@@ -3,68 +3,51 @@
 namespace App\Service;
 
 use Exception;
-use LogicException;
-use Symfony\Component\Process\Process;
 
 class SshService {
-  private $osInfoCmd = 'hostnamectl';
-  private $vhostActive = 'a2query -s';
-  private $sshKeyPass = 'blabla';
-  private $serverSSHConfigAlias = 'vps3';
+  private const VHOSTACTIVE = 'a2query -s';
+  private const SQLDBCMD = 'which mysql && echo "SHOW DATABASES" | sudo mysql'; 
+  private const OSINFOCMD = 'hostnamectl';
+  public function __construct(){}
 
-  public function __construct() 
-  { 
-  }
-
-  public function sshCmd(Array $commands )
+  private function ssh(string $cmd, string $host)
   {
-    /*
-      * adding ssh-agent and ssh-add with pass phrase
-      * https://stackoverflow.com/questions/27022516/controlling-an-interactive-process-with-php-using-symfony-process
-     */ 
+    $res = [];
+    $retStatus = null;
 
-    $process = new Process(array_merge([ 'ssh' ], $commands ));
-    $process->run();
-
-    if (!$process->isSuccessful()){
-            throw new LogicException('failed to use ssh');
-    }
-  }
-
-  public function testPty()
-  {
-    /*
-      * adding ssh-agent and ssh-add with pass phrase
-      * https://stackoverflow.com/questions/27022516/controlling-an-interactive-process-with-php-using-symfony-process
-     */ 
-
-    $process = new Process(
-      ['ssh', 
-      $this->serverSSHConfigAlias,
-      null,
-      $this->sshKeyPass . "\n",   // Append a line feed to simulate pressing ENTER
-      ]);
     try {
-
-      $process->setPty(true);
-      $process->mustRun(function($type, $buffer){
-        echo($buffer);
-      });
-
-      if (!$process->isSuccessful()){
-              dd($process->errors);
-              /* throw new LogicException('failed to use ssh'); */
-      }
-      $output = $process->getOutput();
-
-      dd($output);
-    } 
-    catch(Exception $e){
-      dd($e);
+      exec("ssh {$host} {$cmd}", $res, $resCode);
+      return ['data' => $res, 'retStatus' => $retStatus];
     }
+    catch(Exception $err) {
+        throw $err;
+    }
+  }
 
-    return $output;
+  public function osInfo(string $host)
+  {
+    $res = $this->ssh(self::OSINFOCMD, $host);
+    return $res;
+  }
 
+  public function listVhostInfo(string $host)
+  {
+
+  }
+
+  public function listMaterialArch(string $host)
+  {
+
+  }
+
+  public function listToolsVersion(string $host)
+  {
+  }
+
+  public function listSqlDbs (string $host) 
+  {
+    $res = $this->ssh(self::SQLDBCMD, $host);
+    return $res;
   }
 
 }

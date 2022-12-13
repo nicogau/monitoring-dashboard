@@ -53,10 +53,10 @@ class TestScriptController extends AbstractController
     #[Route('/testssh', name: 'app_test_ssh')]
     public function testssh( SshService $sshService ): Response
     {
-        $resPty = $sshService->testPty();
-        dd($resPty);
+         $testServerSSHConfigAlias = 'vps3';
+        $res = $sshService->osInfo($testServerSSHConfigAlias);
+        dd($res);
         return $this->renderForm('test_script/test_ssh.html.twig', [
-          'resPty' => $resPty,
         ]);
     }
 }
