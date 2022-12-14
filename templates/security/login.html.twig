@@ -8,7 +8,7 @@
         <div class="my-3 border rounded py-4 px-2">
           <form method="post">
               {% if error %}
-                  <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                  <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') ? 'informations d\'identification invalides' : ''}}</div>
               {% endif %}
 
               {% if app.user %}
@@ -29,9 +29,14 @@
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
               </div>
               <div class="d-flex justify-content-center mt-1">
-                <button class="btn btn-lg btn-primary" type="submit">
-                  se connecter
-                </button>
+                <div>
+                  <button class="btn btn-lg btn-primary" type="submit">
+                    se connecter
+                  </button>
+                  <div class="d-flex justify-content-center mt-1">
+                    <a href="{{path('app_register')}}">s' enregistrer</a>
+                </div>
+                </div>
               </div>
           </form>
         </div>

@@ -4,32 +4,43 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            {# lien page listant toutes les infos #}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_info')}}">infos</a>
-            </li>
-            {# lien page configuration virtual host #}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_vhost_index')}}">vhost</a>
-            </li>
-            {# lien page test #}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_test')}}">test</a>
-            </li>
-            {# lien page test ssh #}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_test_ssh')}}">test-ssh</a>
-            </li>
-        </ul>
-        <div>
-            {% if app.user %}
-                <div class="mb-3">
-                  <a href="{{ path('app_logout') }}">deconnexion</a>
-                </div>
-            {% endif %}
+        <div class="d-flex justify-content-between align-items-center w-100">
+          {# menu links #}
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                {# lien page listant toutes les infos #}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_info')}}">infos</a>
+                </li>
+                {# lien page configuration virtual host #}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_vhost_index')}}">vhost</a>
+                </li>
+                {# lien page test #}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_test')}}">test</a>
+                </li>
+                {# lien page test ssh #}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_test_ssh')}}">test-ssh</a>
+                </li>
+            </ul>
+          </div>
+          {# user #}
+              {% if app.user %}
+                  <div>
+                    <h6>{{app.user.email}}</h6>
+                    <div class="d-flex align-items-center">
+                      <a href="{{ path('app_logout') }}">deconnexion</a>
+                    </div>
+                  </div>
+              {% else %}
+                  <div class="d-flex align-items-center">
+                    <a href="{{ path('app_login') }}">se connecter / s' enregistrer</a>
+                  </div>
+
+              {% endif %}
         </div>
-        </div>
+        
     </div>
 </nav>
