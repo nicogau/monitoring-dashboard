@@ -54,9 +54,28 @@ class TestScriptController extends AbstractController
     public function testssh( SshService $sshService ): Response
     {
          $testServerSSHConfigAlias = 'vps3';
-        $res = $sshService->osInfo($testServerSSHConfigAlias);
-        dd($res);
+
+         // os Info
+        $osInfo = $sshService->osInfo($testServerSSHConfigAlias);
+
+         // disk Info
+        $diskInfo = $sshService->diskInfo($testServerSSHConfigAlias);
+
+         // list db
+        $sqlDbList = $sshService->listSqlDbs($testServerSSHConfigAlias);
+
+        // list vhost
+        $vhostList = $sshService->listVhostInfo($testServerSSHConfigAlias);
+
+        // tools version
+        $toolsList = $sshService->listToolsVersion($testServerSSHConfigAlias);
+
         return $this->renderForm('test_script/test_ssh.html.twig', [
+          'osInfo' =>  $osInfo,
+          'diskInfo' => $diskInfo,
+          'sqlDbList' => $sqlDbList,
+          'vhostList' => $vhostList,
+          'toolsList' => $toolsList,
         ]);
     }
 }

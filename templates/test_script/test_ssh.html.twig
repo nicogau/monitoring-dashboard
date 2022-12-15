@@ -6,60 +6,37 @@
 
 <div class="vhost-wrapper">
     <div class="container">
-            {# adding vhost #}
-        <h3 class='text-center my-4 '>Tester un Vhost</h1>
-        {# vhost domain form #}
-        <div class="d-flex flex-column align-items-center w-100">
-            <div class="my-4 w-100">
-                {{ form_start(testVhostForm)}}
-                    {# errors #}
-                    <div class="row form-error m-1">
-                    {{ form_errors(testVhostForm)}}
-                    </div>
-                    <div>
-                        <div class="px-2">tester un Vhost</div> 
-                        {# add form #}
-                        <div class="d-flex w-100">
-                            <div class="m-1 w-50">
-                                {{ form_row(testVhostForm.testVhost.hostname) }}
-                            </div>
-                            <div class="m-1">
-                                {{ form_row(testVhostForm.addbtn) }}
-                            </div>
-                        </div>
-                    </div>
-                {{ form_end(testVhostForm ) }}
-            </div>
-        </div>
 
-        {# result table #}
-        {% if tlsData is not null and tlsData is defined %}
-            <div class="w-50">
-                <table class="table table-bordered">
-                        <tr>
-                            <td><em>domaine</em></td>
-                            <td>{{ tlsData.domain is defined ? tlsData.domain : ""  }}</td>
-                        </tr>    
-                        <tr>
-                            <td><em>émetteur</em></td>
-                            <td>{{ tlsData.issuer is defined? tlsData.issuer : ""  }}</td>
-                        </tr>    
-                        <tr>
-                            <td><em>certificat existe</em></td>
-                            <td>{{ tlsData.cert is defined ? (tlsData.cert == 'true' ? 'oui' : 'non') : ""  }}</td>
-                        </tr>
-                        <tr>
-                            <td><em>date d'expiration</em></td>
-                            <td>{{ tlsData.exp is defined  and tlsData.exp is not null ? tlsData.exp | date("d-m-Y ", "Europe/Paris") : "" }}</td>
-                        </tr>
-                        <tr>
-                            <td><em>nombre de jours restants</em></td>
-                            <td>{{ tlsData.days_left is defined ?  tlsData.days_left : ""  }}</td>
-                        </tr>
-                </table>
-            </div>
-            
-        {% endif %}
+      {# os info #}
+      <div class="p-2">
+        <div>os info</div> 
+        <div>{{ dump(osInfo) }}</div>
+      </div>
+
+      {# disk info #}
+      <div class="p-2">
+        <div>disk info</div> 
+        <div>{{ dump(diskInfo) }}</div>
+      </div>
+      
+      {# sql db list #}
+      <div class="p-2">
+        <div>sql db list</div> 
+        <div>{{ dump(sqlDbList) }}</div>
+      </div>
+
+      {# vhost list #}
+      <div class="p-2">
+        <div>vhost list</div> 
+        <div>{{ dump(vhostList) }}</div>
+      </div>
+
+      {# tools version list #}
+      <div class="p-2">
+        <div>tools list</div> 
+        <div>{{ dump(toolsList) }}</div>
+      </div>
+
     </div>
 </div>
 {% endblock %}
