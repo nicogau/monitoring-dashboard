@@ -4,19 +4,31 @@ namespace App\EventListener;
 
 use App\Entity\ServerInfo;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Exception;
 
 class ServerInfoCrypt {
     private $algo = 'aes-256-ctr';
+    // TODO: next step use symfony vault to keep secrets
     private $private_key = '123456';
     
-    private function encrypt (string $data, string $iv) {
-        $encryptedData = openssl_encrypt($data, $this->algo, $this->private_key, 0, $iv);
-        return $encryptedData;
+    private function encrypt (string $data, string $iv): string | false {
+        try {
+            $encryptedData = openssl_encrypt($data, $this->algo, $this->private_key, 0, $iv);
+            return $encryptedData;
+        }
+        catch(Exception $err) {
+            throw $err;
+        }
     }
 
     private function decrypt (string $data, string $iv) {
-        $encryptedData = openssl_decrypt($data, $this->algo, $this->private_key, 0, $iv);
-        return $encryptedData;
+        try {
+            $encryptedData = openssl_decrypt($data, $this->algo, $this->private_key, 0, $iv);
+            return $encryptedData;
+        }
+        catch(Exception $err) {
+            throw $err;
+        }
     }
 
     /* encrypt on create entity and generate an initialization vector(iv) to encrypt */
@@ -34,13 +46,18 @@ class ServerInfoCrypt {
         $entityName =  $entity->getName();
 
         if ($entityName) {
-            $iv = random_bytes(16);
-            // encode in base64 to persist in db
-            $ivBase64 = base64_encode($iv);
-            // dd(base64_decode($iv));
-            $entity->setIv($ivBase64);
-            $encryptedName = $this->encrypt($entityName, $iv);
-            $entity->setName($encryptedName);
+            try {
+                $iv = random_bytes(16);
+                // encode in base64 to persist in db
+                $ivBase64 = base64_encode($iv);
+                // dd(base64_decode($iv));
+                $entity->setIv($ivBase64);
+                $encryptedName = $this->encrypt($entityName, $iv);
+                $entity->setName($encryptedName);
+            } 
+            catch (Exception $err) {
+                throw $err;
+            }
         }
 
         // $entityManager = $args->getObjectManager();
@@ -58,9 +75,14 @@ class ServerInfoCrypt {
         $entityName =  $entity->getName();
 
         if ($entityName) {
-            $iv = base64_decode($entity->getIv());
-            $encryptedName = $this->encrypt($entityName, $iv);
-            $entity->setName($encryptedName);
+            try {
+                $iv = base64_decode($entity->getIv());
+                $encryptedName = $this->encrypt($entityName, $iv);
+                $entity->setName($encryptedName);
+            }
+            catch(Exception $err) {
+                throw $err;
+            }
         }
 
         // $entityManager = $args->getObjectManager();
@@ -78,12 +100,17 @@ class ServerInfoCrypt {
 
         $entityName =  $entity->getName();
         if ($entityName && !is_null($entity->getIv())) {
-            $iv = base64_decode($entity->getIv());
-            // dd(base64_decode($iv));
-            $decryptedName = $this->decrypt($entityName, $iv);
-            $entity->setName($decryptedName);
+            try {
+                $iv = base64_decode($entity->getIv());
+                // dd(base64_decode($iv));
+                $decryptedName = $this->decrypt($entityName, $iv);
+                $entity->setName($decryptedName);
+            }
+            catch (Exception $err) {
+                throw $err;
+            }
         }
-        $entityManager = $args->getObjectManager();
+        // $entityManager = $args->getObjectManager();
         // dd('inside postLoad', $entity);
 
     } 
