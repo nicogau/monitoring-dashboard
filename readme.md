@@ -65,6 +65,7 @@ Pour accéder au serveur de développement, ouvrir un navigateur, par défaut, i
 ###  Activer le compte d'un utilisateur: 
    lorsqu' un utilisateur s' enregistre, par défaut son compte est inactif.
    l' administrateur doit activer le compte en modifiant en base de données la clef ***is_active*** et la mettre à  **1** dans la table ***User***
+   et ajouter le role ***ROLE_ADMIN***  au tableau dans le champ *roles*
 
 <br>
 
