@@ -91,8 +91,18 @@ installer la clef public *server_rsa.pub* sur les serveurs distants.
 
 <br>
 
-### Changer la configuration de l'application: 
-Les differentes constantes sont définies dans le fichier : 
 
-<br>
+## Notes: 
+Le dépôt *Git* contient 2 branches
+  - ***main*** : branche principal
+  - ***encrypt-bdd-1612***: développement en cours.
+  l'objectif est de mettre en place le cryptage de certains champs sensibles dans la table ***ServeurInfo***.
+
+  le cryptage se fait automatiquement juste avant qu'une entité soit "persisté" en base, et aussi lorsque celle ci est "updaté"
+
+  le décryptage se fait automatiquement au chargement de l'entité dans doctrine
+
+  la définition des *lifeCycle listeners* se trouvent dans ***src/EventListener/ServerInfoCrypt.php***    
+  
+  leurs activations dans ***config/services.yaml***
 

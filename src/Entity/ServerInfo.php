@@ -62,6 +62,9 @@ class ServerInfo
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sshHostKey = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $iv = null;
+
     public function __construct()
     {
         $this->vhosts = new ArrayCollection();
@@ -249,6 +252,18 @@ class ServerInfo
     public function setSshHostKey(?string $sshHostKey): self
     {
         $this->sshHostKey = $sshHostKey;
+
+        return $this;
+    }
+
+    public function getIv(): ?string
+    {
+        return $this->iv;
+    }
+
+    public function setIv(?string $iv): self
+    {
+        $this->iv = $iv;
 
         return $this;
     }
