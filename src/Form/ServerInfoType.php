@@ -21,6 +21,12 @@ class ServerInfoType extends AbstractType
                     new NotBlank(['message' => 'ce champ ne peut être vide']),
                 ]
             ])
+            ->add('sshHostKey', TextType::class, [
+                'label' => 'hôte SSH',
+                'constraints' => [
+                    new NotBlank(['message' => 'ce champ ne peut être vide']),
+                ]
+            ])
             ->add('ip', TextType::class, [
                 'label' => 'adresse IP',
                 'constraints' => [

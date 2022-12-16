@@ -41,21 +41,24 @@ UI: ***Twig***
 
 
 ### Mode développement:
-pour lancer le serveur de développement  
+Pour lancer le serveur de développement  
 ``` 
     $ composer dev-start
 ```
-pour arrêter le serveur de développement  
+Pour arrêter le serveur de développement  
 ```
     $ composer dev-stop
 ```
-pour initialiser le projet et mettre en place la base de données dans ***docker***   
+Pour initialiser le projet et mettre en place la base de données dans ***docker***   
 ```
     $ composer dev-start
     $ composer dev-init
 ```
+Pour accéder à ***Adminer*** 
+les données de configuration sont dans le fichier *db/docker-composer.yaml*  
+***Adminer*** est accessible sur ***localhost:7080***  
 
-ouvrir un navigateur, par défaut le serveur sera accessible sur ***localhost:8000***
+Pour accéder au serveur de développement, ouvrir un navigateur, par défaut, il sera accessible sur ***localhost:8000***
 
 <br>
 
