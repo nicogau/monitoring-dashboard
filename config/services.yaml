@@ -24,6 +24,8 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\EventListener\ServerInfoCrypt:
+        arguments:
+            $privatePassword: '%env(DATABASE_ENCRYPT_PASS)%'
         tags:
             -
                 name: 'doctrine.event_listener'

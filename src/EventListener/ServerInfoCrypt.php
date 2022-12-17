@@ -8,12 +8,19 @@ use Exception;
 
 class ServerInfoCrypt {
     private $algo = 'aes-256-ctr';
-    // TODO: next step use symfony vault to keep secrets
-    private $private_key = '123456';
+    //  using symfony vault to keep secrets
+    //  configuring vault and a passphrase for encrypting the database:
+    //  https://symfony.com/doc/6.1/configuration/secrets.html
+    //  read the doc for the production mode
+    //
+    //  $privatePassword argument is injected from service.yaml
+    //
+     
+    public function __construct(private string $privatePassword) {}
     
     private function encrypt (string $data, string $iv): string | false {
         try {
-            $encryptedData = openssl_encrypt($data, $this->algo, $this->private_key, 0, $iv);
+            $encryptedData = openssl_encrypt($data, $this->algo, $this->privatePassword, 0, $iv);
             return $encryptedData;
         }
         catch(Exception $err) {
@@ -23,7 +30,7 @@ class ServerInfoCrypt {
 
     private function decrypt (string $data, string $iv) {
         try {
-            $encryptedData = openssl_decrypt($data, $this->algo, $this->private_key, 0, $iv);
+            $encryptedData = openssl_decrypt($data, $this->algo, $this->privatePassword, 0, $iv);
             return $encryptedData;
         }
         catch(Exception $err) {
@@ -38,7 +45,6 @@ class ServerInfoCrypt {
          *    - name 
          */
         $entity = $args->getObject();
-
         // this listener only applies on ServerInfo entity 
         if (!$entity instanceof ServerInfo) {
             return;
