@@ -7,7 +7,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Exception;
 
 class ServerInfoCrypt {
-    private $algo = 'aes-256-ctr';
+    private const ALGO = 'aes-256-ctr';
     //  using symfony vault to keep secrets
     //  configuring vault and a passphrase for encrypting the database:
     //  https://symfony.com/doc/6.1/configuration/secrets.html
@@ -20,7 +20,7 @@ class ServerInfoCrypt {
     
     private function encrypt (string $data, string $iv): string | false {
         try {
-            $encryptedData = openssl_encrypt($data, $this->algo, $this->privatePassword, 0, $iv);
+            $encryptedData = openssl_encrypt($data, self::ALGO, $this->privatePassword, 0, $iv);
             return $encryptedData;
         }
         catch(Exception $err) {
@@ -30,7 +30,7 @@ class ServerInfoCrypt {
 
     private function decrypt (string $data, string $iv) {
         try {
-            $encryptedData = openssl_decrypt($data, $this->algo, $this->privatePassword, 0, $iv);
+            $encryptedData = openssl_decrypt($data, self::ALGO, $this->privatePassword, 0, $iv);
             return $encryptedData;
         }
         catch(Exception $err) {
@@ -38,7 +38,7 @@ class ServerInfoCrypt {
         }
     }
 
-    /* encrypt on create entity and generate an initialization vector(iv) to encrypt */
+    /* encrypt entity  before persist in db and generate an initialization vector(iv) to encrypt */
     public function prePersist(LifecycleEventArgs $args): void
     {
         /* encrypted ServerInfo field :
@@ -49,26 +49,33 @@ class ServerInfoCrypt {
         if (!$entity instanceof ServerInfo) {
             return;
         }
+        /* generate an initialization vector(iv) to encrypt */
+        $iv = random_bytes(16);
+        // encode in base64 to persist in db
+        $ivBase64 = base64_encode($iv);
+        $entity->setIv($ivBase64);
+
         $entityName =  $entity->getName();
+        $entityIp = $entity->getIp();
+        $entitySshHostKey =$entity->getSshHostKey();
 
         if ($entityName) {
-            try {
-                $iv = random_bytes(16);
-                // encode in base64 to persist in db
-                $ivBase64 = base64_encode($iv);
-                // dd(base64_decode($iv));
-                $entity->setIv($ivBase64);
                 $encryptedName = $this->encrypt($entityName, $iv);
                 $entity->setName($encryptedName);
-                // Encrypt other fields here
-                // ...
-                // $encryptedField = $this->encrypt($entity->Getfield()->, $iv);
-                // $entity->setField($encryptedField);
             } 
-            catch (Exception $err) {
-                throw $err;
-            }
-        }
+        if ($entityIp) {
+                $encryptedIp = $this->encrypt($entityIp, $iv);
+                $entity->setIp($encryptedIp);
+            } 
+        if ($entitySshHostKey) {
+                $encryptedSshKey = $this->encrypt($entitySshHostKey, $iv);
+                $entity->setSshhostKey($encryptedSshKey);
+            } 
+
+        // Encrypt other fields here
+        // ...
+        // $encryptedField = $this->encrypt($entity->Getfield()->, $iv);
+        // $entity->setField($encryptedField);
 
         // $entityManager = $args->getObjectManager();
     }
@@ -82,29 +89,40 @@ class ServerInfoCrypt {
         if (!$entity instanceof ServerInfo) {
             return;
         }
+
         $entityName =  $entity->getName();
+        $entityIp = $entity->getIp();
+        $entitySshHostKey =$entity->getSshHostKey();
+
+        // decode   iv 
+        $iv = base64_decode($entity->getIv());
+
 
         if ($entityName) {
-            try {
-                $iv = base64_decode($entity->getIv());
                 $encryptedName = $this->encrypt($entityName, $iv);
                 $entity->setName($encryptedName);
-                // Encrypt other fields here
-                // ...
-                // $encryptedField = $this->encrypt($entity->Getfield()->, $iv);
-                // $entity->setField($encryptedField);
-            }
-            catch(Exception $err) {
-                throw $err;
-            }
         }
 
+        if ($entityIp) {
+                $encryptedIp = $this->encrypt($entityIp, $iv);
+                $entity->setIp($encryptedIp);
+            } 
+        if ($entitySshHostKey) {
+                $encryptedSshKey = $this->encrypt($entitySshHostKey, $iv);
+                $entity->setSshHostKey($encryptedSshKey);
+            } 
+
+        // Encrypt other fields here
+        // ...
+        // $encryptedField = $this->encrypt($entity->Getfield()->, $iv);
+        // $entity->setField($encryptedField);
         // $entityManager = $args->getObjectManager();
     }
 
 
     /* decrypt after loading ServerInfo entity */
-    public function postLoad(LifecycleEventArgs $args) {
+    public function postLoad(LifecycleEventArgs $args) 
+    {
         $entity = $args->getObject();
 
         // this listener only applies on ServerInfo entity 
@@ -112,24 +130,35 @@ class ServerInfoCrypt {
             return;
         }
 
-        $entityName =  $entity->getName();
-        if ($entityName && !is_null($entity->getIv())) {
-            try {
-                $iv = base64_decode($entity->getIv());
-                // dd(base64_decode($iv));
-                $decryptedName = $this->decrypt($entityName, $iv);
-                $entity->setName($decryptedName);
-                // Decrypt other fields here
-                // ...
-                // $deCryptedField = $this->decrypt($entity->Getfield()->, $iv);
-                // $entity->setField($encryptedField);
-            }
-            catch (Exception $err) {
-                throw $err;
-            }
-        }
-        // $entityManager = $args->getObjectManager();
-        // dd('inside postLoad', $entity);
 
+        if (is_null($entity->getIv())){
+            throw new Exception("error while decrypting data");
+        }
+        
+        // decode iv
+        $iv = base64_decode($entity->getIv());
+
+        $entityName =  $entity->getName();
+        $entityIp = $entity->getIp();
+        $entitySshHostKey =$entity->getSshHostKey();
+
+        if ($entityName) {
+            $decryptedName = $this->decrypt($entityName, $iv);
+            $entity->setName($decryptedName);
+        }
+        if ($entityIp) {
+                $decryptedIp = $this->decrypt($entityIp, $iv);
+                $entity->setIp($decryptedIp);
+            } 
+        if ($entitySshHostKey) {
+                $decryptedSshKey = $this->decrypt($entitySshHostKey, $iv);
+                $entity->setSshHostKey($decryptedSshKey);
+            } 
+            // Decrypt other fields here
+            // ...
+            // $deCryptedField = $this->decrypt($entity->Getfield()->, $iv);
+            // $entity->setField($encryptedField);
+
+        // $entityManager = $args->getObjectManager();
     } 
 }
