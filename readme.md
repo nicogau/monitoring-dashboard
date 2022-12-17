@@ -94,15 +94,26 @@ installer la clef public *server_rsa.pub* sur les serveurs distants.
 
 ## Notes: 
 Le dépôt *Git* contient 2 branches
-  - ***main*** : branche principal
-  - ***encrypt-bdd-1612***: développement en cours.
+  - ***main*** :  
+    branche principal
+
+    <br>
+
+  - ***encrypt-bdd-1612***:  
+  développement en cours.
   l'objectif est de mettre en place le cryptage de certains champs sensibles dans la table ***ServeurInfo***.
 
   le cryptage se fait automatiquement juste avant qu'une entité soit "persisté" en base, et aussi lorsque celle ci est "updaté"
 
   le décryptage se fait automatiquement au chargement de l'entité dans doctrine
 
-  la définition des *lifeCycle listeners* se trouvent dans ***src/EventListener/ServerInfoCrypt.php***    
-  
-  leurs activations dans ***config/services.yaml***
+  la définition des *lifeCycle listeners* gérant le cryptate se trouvent dans ***src/EventListener/ServerInfoCrypt.php***    
+
+  la clef de cryptage est stockée dans  le [***Symfony vault***](https://symfony.com/doc/6.1/configuration/secrets.html), les clefs publiques et privées sont *commit* dans le repo github(*services/config*)et disponibles uniquement dans un environnement de *développement)*.    
+
+  ***ATTENTION:***  
+  ***La configuration à suivre pour le mode production est disponible dans le lien de configuration de*** [***Symfony vault***](https://symfony.com/doc/6.1/configuration/secrets.html).
+   ***la clef privée ne doit pas être commit sur github et doit être copié séparément sur le serveur***.
+
+  L'injection de la *pass phrase* dans la classe ***ServerInfoCrypt***  se fait depuis le fichier ***config/services.yaml***
 
