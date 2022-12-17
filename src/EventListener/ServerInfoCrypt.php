@@ -60,6 +60,10 @@ class ServerInfoCrypt {
                 $entity->setIv($ivBase64);
                 $encryptedName = $this->encrypt($entityName, $iv);
                 $entity->setName($encryptedName);
+                // Encrypt other fields here
+                // ...
+                // $encryptedField = $this->encrypt($entity->Getfield()->, $iv);
+                // $entity->setField($encryptedField);
             } 
             catch (Exception $err) {
                 throw $err;
@@ -85,6 +89,10 @@ class ServerInfoCrypt {
                 $iv = base64_decode($entity->getIv());
                 $encryptedName = $this->encrypt($entityName, $iv);
                 $entity->setName($encryptedName);
+                // Encrypt other fields here
+                // ...
+                // $encryptedField = $this->encrypt($entity->Getfield()->, $iv);
+                // $entity->setField($encryptedField);
             }
             catch(Exception $err) {
                 throw $err;
@@ -111,6 +119,10 @@ class ServerInfoCrypt {
                 // dd(base64_decode($iv));
                 $decryptedName = $this->decrypt($entityName, $iv);
                 $entity->setName($decryptedName);
+                // Decrypt other fields here
+                // ...
+                // $deCryptedField = $this->decrypt($entity->Getfield()->, $iv);
+                // $entity->setField($encryptedField);
             }
             catch (Exception $err) {
                 throw $err;
