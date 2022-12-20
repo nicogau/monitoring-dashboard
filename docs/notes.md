@@ -3,7 +3,6 @@
 ## Réunion du 26-11
 
 ### Certificats TLS
-<br>
 
 À partir d’une liste de noms de domaines, récupérer les certificats pour identifier les registras et les dates d’expiration
 
@@ -14,7 +13,6 @@ en sortie un mail  est envoyé pour chaque domaine, on note le registrar et la d
 <br>
 
 ### Informations Serveurs
-<br>
 Réalisation d'une sonde  permettant de récupérer des informations sur les serveurs de l'infra.
 
 informations à récupérer: 
